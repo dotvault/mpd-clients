@@ -1,11 +1,42 @@
-# MPD
+## Music Player
+
+## Requirements:
+## - Deamon: mpd
+## - CLI: mpc
+## - Clients:
+##     - ncmpcpp
+##     - rmpc
+
+
+## NOTE: My configuration is set up to run with user permissions by default,
+##  which means no permission changes are required to use it.
+##
+## Only enable the user service
+## system --user enable --now mpd.service
+##
+## mpd (Deamon)
 mpd      | | mpd/playlists | exclude | .config
-mpd      | | mpd/          | symlink | .config
+mpd      | | mpd/          | copy    | .config
 
-# Client
+
+## NOTE: MPD also needs audio backends, such as PipeWire or ALSA. You need to install them.
+## These packages's default configuration works out of the box.
+## Here are some of my personal settings for reference.
+##
+## pipewire (Audio backend)
+
+
+## NOTE: MPD' clients
+## Although I minimized hardcoding so it works without changes, some settings had to be hardcoded.
+## Because they can't read environment variables or for other reasons — you should check them to ensure they work on your device.
+##
+## ncmpcpp (MPD TUI client)
 ncmpcpp  | | ncmpcpp/error.log | exclude | .config
-ncmpcpp  | | ncmpcpp/          | symlink | .config
+ncmpcpp  | | ncmpcpp/          | copy    | .config
 
-# Client
+
+## WARNING: hardcode
+##
+## rmpc (MPD TUI client)
 rmpc     | | rmpc/bin/onresize | exclude | .config
-rmpc     | | rmpc/             | symlink | .config
+rmpc     | | rmpc/             | copy    | .config
