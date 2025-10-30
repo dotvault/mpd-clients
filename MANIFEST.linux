@@ -1,0 +1,11 @@
+# MPD
+mpd      | | mpd/playlists | exclude | .config
+mpd      | | mpd/          | symlink | .config
+
+# Client
+ncmpcpp  | | ncmpcpp/error.log | exclude | .config
+ncmpcpp  | | ncmpcpp/          | symlink | .config
+
+# Client
+rmpc     | | rmpc/bin/onresize | exclude | .config
+rmpc     | | rmpc/             | symlink | .config
