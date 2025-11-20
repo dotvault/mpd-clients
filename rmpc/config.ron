@@ -6,8 +6,8 @@
 (
     // MPD 🤝 rmpc
     // NOTE: Check your mpd.conf. Ensure the corresponding item's data matches.
-    address: "127.0.0.1:6600",     // see `bind_to_address` (Network)
-    // address: "/tmp/mpd_socket", // see `bind_to_address` (Socket)
+    // address: "127.0.0.1:6600",     // IP:Port    , see `bind_to_address` (Network)
+    address: "/tmp/mpd_socket",       // Socket file, see `bind_to_address` (Unix socket)
     password: None,                // see `password`
 
     // Paths

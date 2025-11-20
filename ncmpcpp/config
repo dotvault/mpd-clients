@@ -1,3 +1,5 @@
+# vim: set filetype=toml :
+
 # Refs
 # - Enabling visualization: https://wiki.archlinux.org/title/Ncmpcpp#Enabling_visualization
 # - Notification on song change: https://wiki.archlinux.org/title/Ncmpcpp#Notification_on_song_change
@@ -26,8 +28,9 @@ lyrics_directory = ~/User/Music/ncmpcpp
 
 ##### connection settings #####
 ##
-#mpd_host = localhost
-#mpd_port = 6600
+#mpd_host = localhost       # see `bind_to_address` (Network)
+mpd_host = /tmp/mpd_socket  # see `bind_to_address` (Unix socket)
+# mpd_port = 6600
 #mpd_password = ""
 mpd_connection_timeout = 5
 
