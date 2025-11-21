@@ -1,4 +1,4 @@
-// Refs: https://mierak.github.io/rmpc/next/configuration/
+// https://rmpc.mierak.dev/next/configuration/
 
 #![enable(implicit_some)]
 #![enable(unwrap_newtypes)]
@@ -6,9 +6,10 @@
 (
     // MPD 🤝 rmpc
     // NOTE: Check your mpd.conf. Ensure the corresponding item's data matches.
-    // address: "127.0.0.1:6600",     // IP:Port    , see `bind_to_address` (Network)
-    address: "/tmp/mpd_socket",       // Socket file, see `bind_to_address` (Unix socket)
-    password: None,                // see `password`
+    //
+    // address: "127.0.0.1:6600",     // IP:Port    , see `bind_to_address` in mpd.conf (Network)
+    address: "/tmp/mpd_socket",       // Socket file, see `bind_to_address` in mpd.conf (Unix socket)
+    password: None, // see `password` in mpd.conf
 
     // Paths
     cache_dir: None,                  // WARNING: Currently used only to store files downloaded from YouTube.
@@ -31,6 +32,10 @@
     // See https://mierak.github.io/rmpc/next/guides/on_resize/
     //
     // on_resize: ["~/.config/rmpc/bin/onresize"], // auto change theme for different size.
+
+    // Sort
+    // browser_song_sort: [Disc， Track， Artist， Title],
+    // directories_sort: SortFormat(group_by_type: true, reverse: false),
 
     // Misc
     volume_step: 5,
@@ -139,33 +144,9 @@
 
     // https://mierak.github.io/rmpc/next/configuration/tabs/
     // ----------------------------------------------------------------------
-    //        | Queue | Directories | Playlists | Visualizer | Search |
+    //    | Main | Queue | Directories | Playlists | Visualizer | Search |
     // -----------------------------------------------------------------------
     tabs: [
-       // (
-       //     name: "Queue",
-       //     pane: Split(
-       //         direction: Horizontal,
-       //         borders: "ALL",
-       //         panes: [
-       //             (size: "35%", pane: Split(
-       //                 direction: Vertical,
-       //                 borders: "RIGHT",
-       //                 panes: [
-       //                     (size: "80%", pane: Pane(AlbumArt), borders: "BOTTOM"),
-       //                     (size: "20%", pane: Pane(Cava)),
-       //                 ]
-       //             )),
-       //             (size: "65%", pane: Split(
-       //                 direction: Vertical,
-       //                 panes: [
-       //                     (size: "40%", pane: Pane(Queue), borders: "BOTTOM"),
-       //                     (size: "60%", pane: Pane(Lyrics)),
-       //                 ],
-       //             )),
-       //         ],
-       //     ),
-       // ),
         (
             name: "Main",
             pane: Split(
@@ -222,10 +203,12 @@
     ],
 
     // -> Pane(Search)
+    // https://rmpc.mierak.dev/next/configuration/search/
     // see `browser_song_format` in themes/default.ron
     search: (
         case_sensitive: false,  // a/A
-        mode: Contains,
+        // search_button: false,
+        mode: Contains, // filter mode
         tags: [
             (value: "any",         label: "Any Tag"),
             (value: "artist",      label: "Artist"),
@@ -244,26 +227,26 @@
     ),
 
     // -> Pane(AlbumArt)
-    // https://mierak.github.io/rmpc/next/configuration/album-art/#configuration
+    // https://rmpc.mierak.dev/next/configuration/album-art/
     album_art: (
         // NOTE: You maybe need to install `kitty` or `ueberzugpp`  which supports display images
         // in your terminal.
         method: Auto, // kitty -> Ueberzug -> Block
         max_size_px: (width: 1200, height: 1200),
-        disabled_protocols: ["http://", "https://"],
+        // disabled_protocols: ["http://", "https://"],
         vertical_align: Center,
         horizontal_align: Center,
     ),
 
     // -> Pane(Cava)
-    // https://mierak.github.io/rmpc/next/configuration/cava/
+    // https://rmpc.mierak.dev/next/configuration/cava/#setup
     // Theme part: see `cava` in themes/default.ron
     cava: (
-        framerate: 60,              // FPS
-        autosens: true,             // default true
-        sensitivity: 100,           // default 100
-        lower_cutoff_freq: 50,      // not passed to cava if not provided
-        higher_cutoff_freq: 10000,  // not passed to cava if not provided
+        // framerate: 60,              // default 60
+        // autosens: true,             // default true
+        // sensitivity: 100,           // default 100
+        // lower_cutoff_freq: 50,      // not passed to cava if not provided
+        // higher_cutoff_freq: 10000,  // not passed to cava if not provided
         input: (
             // NOTE: see audio_output in `mpd.conf`
             // Ensure the corresponding item's data matches.
@@ -274,9 +257,9 @@
             sample_bits: 16,
         ),
         smoothing: (
-            noise_reduction: 77, // default 77
-            monstercat: false,   // default false
-            waves: false,        // default false
+            // noise_reduction: 77, // default 77
+            // monstercat: false,   // default false
+            // waves: false,        // default false
         ),
         // this is a list of floating point numbers thats directly passed to cava
         // they are passed in order that they are defined

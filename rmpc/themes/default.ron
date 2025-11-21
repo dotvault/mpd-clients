@@ -1,4 +1,4 @@
-// https://mierak.github.io/rmpc/next/configuration/theme/
+// https://rmpc.mierak.dev/next/configuration/theme/
 
 #![enable(implicit_some)]
 #![enable(unwrap_newtypes)]
@@ -26,17 +26,16 @@
     lyrics: (
         timestamp: false, // show [00:00]
     ),
-    symbols: (song: "S", dir: "D", marker: "M", ellipsis: "..."),
+    symbols: (song: "S", dir: "D", playlist: "P", marker: "M", ellipsis: "..."),
 
     // ----------------------------------------------------------------------------------------
 
     tab_bar: (
-        // enabled: true, // WARNING: Deprecated
         active_style: (fg: "black", bg: "#34B1FF", modifiers: "Bold"),
         inactive_style: (),
     ),
     progress_bar: (
-        symbols: ["-", ">", " "],   // ->
+        symbols: ["[", "-", ">", " ", "]"],
         track_style: (fg: "#1e2030"),
         elapsed_style: (fg: "#34B1FF"),
         thumb_style: (fg: "#34B1FF", bg: "#1e2030"),
@@ -49,87 +48,137 @@
     ),
 
     // NOTE: Components are reusable blocks of panes.
-    // https://mierak.github.io/rmpc/next/configuration/layout/#components
+    // https://rmpc.mierak.dev/next/configuration/layout/#components
     components: {
+        // State: [Playing/Paused/...] (QueueTimeTotal<QueueLength>)
         "play_state": Pane(Property(
             content: [
-                (kind: Text("["), style: (fg: "#FABD2F", modifiers: "Bold")),
-                (kind: Property(Status(StateV2())), style: (fg: "#FABD2F", modifiers: "Bold")),
-                (kind: Text("]"), style: (fg: "#FABD2F", modifiers: "Bold")),
+                (kind: Text("[ "), style: (fg: "#FABD2F", modifiers: "Bold")),
+                // (kind: Property(Status(State)), style: (fg: "#FABD2F", modifiers: "Bold")),
+                (kind: Property(Status(StateV2(
+                    playing_label: " Playing", playing_style: (fg: "#FABD2F"),
+                    paused_label: " Paused", paused_style: (fg: "#FABD2F"),
+                    stopped_label: " Stopped", stopped_style: (fg: "#FABD2F"),
+                )))),
+                (kind: Text(" ]"), style: (fg: "#FABD2F", modifiers: "Bold")),
+
+                (kind: Text(" ("), style: (fg: "#af87d7")),
+                (kind: Property(Status(QueueTimeTotal(separator: "/"))), style: (fg: "#af87d7")),
+                (kind: Text("<"), style: (fg: "#af87d7")),
+                (kind: Property(Status(QueueLength(thousands_separator: ","))), style: (fg: "#af87d7")),
+                (kind: Text(">"), style: (fg: "#af87d7")),
+                (kind: Text(")"), style: (fg: "#af87d7")),
             ],
             align: Left,
         )),
+        // Song Title
         "album_title": Pane(Property(
             content: [
-                (kind: Property(Song(Title)), style: (modifiers: "Bold"),
-                    default: (kind: Text("No Song"), style: (modifiers: "Bold")))
+                (kind: Property(Song(Title)), style: (fg: "#ea403f", modifiers: "Bold"),
+                    default: (kind: Text("No Song"), style: (modifiers: "Bold"))
+                )
             ],
             align: Center,
             scroll_speed: 1
         )),
+        // Volume: ▁▂▃▄▅▆▇█
         "volume": Pane(Property(
             content: [
-                (kind: Property(Widget(Volume)), style: (fg: "#34B1FF", modifiers: "Bold")),
+                (kind: Property(Widget(ScanStatus)), style: (fg: "#8ccf7e")),
+                (kind: Property(Widget(Volume)), style: (fg: "#8ccf7e"))
             ],
             align: Right,
         )),
-        "header_1": Split(
-            direction: Horizontal,
-            panes: [
-                (size: "23", pane: Component("play_state")),
-                (size: "100%", pane: Component("album_title")),
-                (size: "23", pane: Component("volume")),
-            ],
-        ),
+        // [ 0:38/3:09 ] (192 kbps)
         "progress_time": Pane(Property(
             content: [
-                (kind: Property(Status(Elapsed))),
-                (kind: Text(" / ")),
-                (kind: Property(Status(Duration))),
-                (kind: Text(" (")),
-                (kind: Property(Status(Bitrate))),
-                (kind: Text(" kbps)"))
+                (kind: Text("[ "), style: (fg: "#FABD2F", modifiers: "Bold")),
+                (kind: Property(Status(Elapsed)), style: (fg: "#FABD2F")),
+                (kind: Text("/"),style: (fg: "#FABD2F")),
+                (kind: Property(Status(Duration)),style: (fg: "#FABD2F")),
+                (kind: Text(" ]"), style: (fg: "#FABD2F", modifiers: "Bold")),
+                (kind: Text(" ("), style: (fg: "#af87d7")),
+                (kind: Property(Status(Bitrate)), style: (fg: "#af87d7")),
+                (kind: Text(" kbps)"), style: (fg: "#af87d7")),
             ],
             align: Left,
         )),
+        // Artist - Album
         "artist_album": Pane(Property(
             content: [
                 (kind: Property(Song(Artist)), style: (fg: "#FABD2F", modifiers: "Bold"),
                     default: (kind: Text("Unknown"), style: (fg: "#FABD2F", modifiers: "Bold"))
                 ),
                 (kind: Text(" - ")),
-                (kind: Property(Song(Album)),
+                (kind: Property(Song(Album)), style: (fg: "#8ccf7e"),
                     default: (kind: Text("Unknown Album"))
                 )
             ],
             align: Center,
             scroll_speed: 1
         )),
+        // [  |   | 󰮯  | 󰎤 ]
         "playback_state": Pane(Property(
             content: [
-                (
-                    kind: Property(Widget(States(
-                        active_style: (fg: "white", modifiers: "Bold"),
-                        separator_style: (fg: "white")))
-                    ),
-                    style: (fg: "dark_gray")
-                ),
+                // (
+                //    kind: Property(Widget(States(
+                //        active_style: (fg: "white", modifiers: "Bold"),
+                //        separator_style: (fg: "white")))
+                //    ),
+                //    style: (fg: "dark_gray")
+                // ),
+                (kind: Text("[ "), style: (fg: "#34B1FF")),
+                (kind: Property(Status(RepeatV2(
+                    on_label: " ", on_style: (fg: "#34B1FF"),
+                    off_label: " ", off_style: (fg: "#444444"),
+                )))),
+                (kind: Text(" | "), style: (fg: "#34B1FF")),
+                (kind: Property(Status(RandomV2(
+                    on_label: " ", on_style: (fg: "#34B1FF"),
+                    off_label: " ", off_style: (fg: "#444444"),
+                )))),
+                (kind: Text(" | "), style: (fg: "#34B1FF")),
+                (kind: Property(Status(ConsumeV2(
+                    on_label: "󰮯 ", on_style: (fg: "#34B1FF"),
+                    off_label: "󰮯 ", off_style: (fg: "#444444"),
+                    oneshot_label: " ", oneshot_style: (fg: "#34B1FF"),
+                )))),
+                (kind: Text(" | "), style: (fg: "#34B1FF")),
+                (kind: Property(Status(SingleV2(
+                    on_label: "󰎤 ", on_style: (fg: "#34B1FF"),
+                    off_label: "󰎤 ", off_style: (fg: "#444444"),
+                    oneshot_label: " ", oneshot_style: (fg: "#34B1FF"),
+                )))),
+                (kind: Text("]"), style: (fg: "#34B1FF")),
             ],
             align: Right,
         )),
+        // --------------------------------------------------------------------
+        // [Playing/Paused]         Song Title                 Volume: ▁▂▃▄▅▆▇█
+        // --------------------------------------------------------------------
+        "header_1": Split(
+            direction: Horizontal,
+            panes: [
+                (size: "30", pane: Component("play_state")),
+                (size: "100%", pane: Component("album_title")),
+                (size: "30", pane: Component("volume")),
+            ],
+        ),
+        // --------------------------------------------------------------------
+        // 0:38/3:09 (192 kbps)   Artist - Album    Repeat/Random/Cosume/Single
+        // --------------------------------------------------------------------
         "header_2": Split(
             direction: Horizontal,
             panes: [
-                (size: "23", pane: Component("progress_time")),
+                (size: "30", pane: Component("progress_time")),
                 (size: "100%", pane: Component("artist_album")),
-                (size: "23", pane: Component("playback_state")),
+                (size: "30", pane: Component("playback_state")),
             ],
         ),
     },
 
-
     // NOTE: Because terminal font size affects display, you may need to adjust the size manually.
-    // https://mierak.github.io/rmpc/next/configuration/layout/
+    // https://rmpc.mierak.dev/next/configuration/layout/
     layout: Split(
         direction: Vertical,
         panes: [
@@ -148,10 +197,10 @@
                             pane: Split(
                                 direction: Vertical,
                                 panes: [
-                                    (size: "20%", pane: Pane(Header)),
-                                    // (size: "10%", pane: Component("header_1")),
-                                    // (size: "10%", pane: Component("header_2")),
-                                    (size: "70%", pane: Pane(Cava)),
+                                    // (size: "20%", pane: Pane(Header)),
+                                    (size: "5%", pane: Component("header_1")),
+                                    (size: "5%", pane: Component("header_2")),
+                                    (size: "80%", pane: Pane(Cava)),
                                     (size: "10%", pane: Pane(ProgressBar)),
                                 ]
                             )
@@ -171,11 +220,12 @@
     ),
 
     // -> Pane(Header)
-    // https://mierak.github.io/rmpc/next/configuration/header/
+    // https://rmpc.mierak.dev/next/configuration/panes/#header
     // --------------------------------------------------------------------
     // [Playing/Paused]         Song Title                 Volume: ▁▂▃▄▅▆▇█
     // 0:38/3:09 (192 kbps)   Artist - Album    Repeat/Random/Cosume/Single
     // --------------------------------------------------------------------
+    // WARNING: Do not use this pane. Use the `layout` and `Property` panes instead.
     header: (
         rows: [
             (
@@ -271,7 +321,7 @@
     // https://mierak.github.io/rmpc/next/configuration/song-table/
     //          Title       Artist       Album       Duration
     // ------------------------------------------------------------
-    // Sticker: https://github.com/jcorporation/mpd-stickers
+    // https://rmpc.mierak.dev/next/configuration/stickers/
     show_song_table_header: true, // NOTE: enable it
     song_table_album_separator: None,
     song_table_format: [
@@ -330,7 +380,7 @@
     ],
 
     // -> Pane(Cava)
-    // https://mierak.github.io/rmpc/next/configuration/cava/
+    // https://rmpc.mierak.dev/next/configuration/cava/#theming
     cava: (
         // symbols that will be used to draw the bar in the visualiser, in ascending order of
         // fill fraction
