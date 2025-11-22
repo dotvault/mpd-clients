@@ -89,6 +89,23 @@
             ],
             align: Right,
         )),
+        // TODO: https://rmpc.mierak.dev/next/configuration/panes/#volume (since v0.10.0)
+        //  󰹞󰹞󰹞󰹞󰹞󰹞󰹞󰹞󰹞󰹞󰹞󰹞󰹞󰹞󰹞󰹞   (silder)
+        //
+        // "volume": Pane(Volume(
+        //             kind: Slider(
+        //                 symbols: (
+        //                     start: " ",
+        //                     filled: "󰹞",
+        //                     thumb: "●",
+        //                     track: "-",
+        //                     end: " ",
+        //                 ),
+        //                 track_style: (fg: "gray"),
+        //                 filled_style: (fg: "green"),
+        //                 thumb_style: (fg: "white"),
+        //             )),
+        // ),
         // [ 0:38/3:09 ] (192 kbps)
         "progress_time": Pane(Property(
             content: [
@@ -159,20 +176,20 @@
         "header_1": Split(
             direction: Horizontal,
             panes: [
-                (size: "30", pane: Component("play_state")),
+                (size: "20%", pane: Component("play_state")),
                 (size: "100%", pane: Component("album_title")),
-                (size: "30", pane: Component("volume")),
+                (size: "20%", pane: Component("volume")),
             ],
         ),
         // --------------------------------------------------------------------
-        // 0:38/3:09 (192 kbps)   Artist - Album    Repeat/Random/Cosume/Single
+        // 0:38/3:09 (192 kbps)     Artist - Album          [  |   | 󰮯  | 󰎤 ]
         // --------------------------------------------------------------------
         "header_2": Split(
             direction: Horizontal,
             panes: [
-                (size: "30", pane: Component("progress_time")),
+                (size: "30%", pane: Component("progress_time")),
                 (size: "100%", pane: Component("artist_album")),
-                (size: "30", pane: Component("playback_state")),
+                (size: "30%", pane: Component("playback_state")),
             ],
         ),
     },

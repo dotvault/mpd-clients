@@ -41,11 +41,12 @@
     volume_step: 5,
     scrolloff: 0,
     wrap_navigation: false,
-    enable_mouse: false, // I perfer to use my keyboard.
+    enable_mouse: true, // I perfer to use my keyboard.
     enable_config_hot_reload: true, // default enabled
 
     // ------------------------------------------------------------------------------------
 
+    // https://rmpc.mierak.dev/next/configuration/keybinds/
     keybinds: (
         global: {
             // Show Infos
@@ -90,8 +91,9 @@
             "c":       ToggleConsume, // Remove played tracks
             "v":       ToggleSingle,  // Stop after playing all tracks
         },
+
         navigation: {
-            // Navigation
+            // Base
             "<Up>":      Up,
             "<Down>":    Down,
             "<Left>":    Left,
@@ -131,6 +133,7 @@
             "<C-Space>": InvertSelection,
             "i":         FocusInput,
         },
+
         queue: {
             "<CR>":    Play,     // play the selected track
             "i":       ShowInfo, // show the selected track's info
@@ -144,7 +147,7 @@
 
     // https://mierak.github.io/rmpc/next/configuration/tabs/
     // ----------------------------------------------------------------------
-    //    | Main | Queue | Directories | Playlists | Visualizer | Search |
+    //          | Main | Queue | Directories | Playlists | Search |
     // -----------------------------------------------------------------------
     tabs: [
         (
@@ -154,13 +157,6 @@
                 panes: [
                     (size: "40%", pane: Pane(Queue), borders: "RIGHT"),
                     (size: "60%", pane: Pane(Lyrics)),
-                    // (size: "60%", pane: Split(
-                    //    direction: Vertical,
-                    //    panes: [
-                    //        (size: "80%", pane: Pane(Lyrics)),
-                    //        (size: "20%", pane: Pane(Cava)),
-                    //    ]
-                    // )),
                 ],
             ),
         ),
