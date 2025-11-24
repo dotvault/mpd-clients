@@ -23,10 +23,11 @@
 
     // Misc
     format_tag_separator: " | ",
+    // multiple_tag_resolution_strategy: All,
     lyrics: (
         timestamp: false, // show [00:00]
     ),
-    symbols: (song: "S", dir: "D", playlist: "P", marker: "M", ellipsis: "..."),
+    symbols: (song: " ", dir: " ", playlist: "󰲸 ", marker: "M", ellipsis: "..."),
 
     // ----------------------------------------------------------------------------------------
 
@@ -35,7 +36,7 @@
         inactive_style: (),
     ),
     progress_bar: (
-        symbols: ["[", "-", ">", " ", "]"],
+        symbols: ["[", "=", ">", "=", "]"],
         track_style: (fg: "#1e2030"),
         elapsed_style: (fg: "#34B1FF"),
         thumb_style: (fg: "#34B1FF", bg: "#1e2030"),
@@ -176,9 +177,9 @@
         "header_1": Split(
             direction: Horizontal,
             panes: [
-                (size: "20%", pane: Component("play_state")),
+                (size: "30%", pane: Component("play_state")),
                 (size: "100%", pane: Component("album_title")),
-                (size: "20%", pane: Component("volume")),
+                (size: "30%", pane: Component("volume")),
             ],
         ),
         // --------------------------------------------------------------------
@@ -363,7 +364,7 @@
         ),
         (
             prop: (kind: Property(Album), style: (fg: "#6cbfbf"),
-                default: (kind: Text("Unknown Album"), style: (fg: "white"))
+                default: (kind: Text("Unknown"), style: (fg: "white"))
             ),
             width: "30%",
         ),
