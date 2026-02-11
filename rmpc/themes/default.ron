@@ -1,4 +1,4 @@
-// https://rmpc.mierak.dev/next/configuration/theme/
+/* Theme: https://rmpc.mierak.dev/next/configuration/theme/ */
 
 #![enable(implicit_some)]
 #![enable(unwrap_newtypes)]
@@ -6,28 +6,29 @@
 (
     default_album_art_path: None,
 
+    /* Color */
     background_color: None,
     header_background_color: None,
     modal_background_color: None,
     modal_backdrop: true, // increased visual clarity
     text_color: None,
 
-    // Item
+    /* Item */
     highlighted_item_style: (fg: "black", bg: "#ea403f", modifiers: "Bold | Italic"),
     current_item_style: (fg: "black", bg: "#34B1FF", modifiers: "Italic"),
 
-    // Border
+    /* Border */
     draw_borders: true,
     borders_style: (fg: "#8ccf7e"),
     highlight_border_style: (fg: "#34B1FF"),
 
-    // Misc
+    /* Misc */
     format_tag_separator: " | ",
-    // multiple_tag_resolution_strategy: All,
+    multiple_tag_resolution_strategy: First,
     lyrics: (
         timestamp: false, // show [00:00]
     ),
-    symbols: (song: " ", dir: " ", playlist: "󰲸 ", marker: "M", ellipsis: "..."),
+    symbols: (song: " ", dir: " ", marker: "M", playlist: "󰲸 ", ellipsis: "..."),
 
     // ----------------------------------------------------------------------------------------
 
@@ -40,6 +41,7 @@
         track_style: (fg: "#1e2030"),
         elapsed_style: (fg: "#34B1FF"),
         thumb_style: (fg: "#34B1FF", bg: "#1e2030"),
+        // use_track_when_empty: true,
     ),
     scrollbar: (
         symbols: ["│", "█", "▲", "▼"],
@@ -48,8 +50,8 @@
         thumb_style: (fg: "#34B1FF"),
     ),
 
-    // NOTE: Components are reusable blocks of panes.
-    // https://rmpc.mierak.dev/next/configuration/layout/#components
+    /* NOTE: Components are reusable blocks of panes. */
+    /* See https://rmpc.mierak.dev/next/configuration/layout/#components */
     components: {
         // State: [Playing/Paused/...] (QueueTimeTotal<QueueLength>)
         "play_state": Pane(Property(
@@ -195,8 +197,8 @@
         ),
     },
 
-    // NOTE: Because terminal font size affects display, you may need to adjust the size manually.
-    // https://rmpc.mierak.dev/next/configuration/layout/
+    /* NOTE: Because terminal font size affects display, you may need to adjust the size manually. */
+    /* See https://rmpc.mierak.dev/next/configuration/layout/ */
     layout: Split(
         direction: Vertical,
         panes: [
@@ -227,43 +229,49 @@
                 ),
             ),
             (
-                size: "6%",
+                size: "5%",
                 pane: Pane(Tabs),
+                borders: "TOP",
             ),
             (
-                size: "70%",
+                size: "80%",
                 pane: Pane(TabContent),
+                borders: "TOP",
             ),
         ],
     ),
 
-    // -> Pane(Header)
-    // https://rmpc.mierak.dev/next/configuration/panes/#header
+    /* -> Pane(Header) */
+    /* See https://rmpc.mierak.dev/next/configuration/panes/#header */
     // --------------------------------------------------------------------
     // [Playing/Paused]         Song Title                 Volume: ▁▂▃▄▅▆▇█
     // 0:38/3:09 (192 kbps)   Artist - Album    Repeat/Random/Cosume/Single
     // --------------------------------------------------------------------
-    // WARNING: Do not use this pane. Use the `layout` and `Property` panes instead.
+    /* WARNING: Do not use this pane. Use the `layout` and `Property` panes instead.
+     * I'll keep this for now and may remove it soon. */
     header: (
         rows: [
             (
-                // State: [Playing/Paused/...]
+                // State: [Playing/Paused/...]  (2h/36m/35s<39>)
                 left: [
-                    (kind: Text("[ "), style: (fg: "#FABD2F", modifiers: "Bold")),
-                    // (kind: Property(Status(State)), style: (fg: "#FABD2F", modifiers: "Bold")),
-                    (kind: Property(Status(StateV2(
-                        playing_label: " Playing", playing_style: (fg: "#FABD2F"),
-                        paused_label: " Paused", paused_style: (fg: "#FABD2F"),
-                        stopped_label: " Stopped", stopped_style: (fg: "#FABD2F"),
-                    )))),
-                    (kind: Text(" ]"), style: (fg: "#FABD2F", modifiers: "Bold")),
-
-                    (kind: Text(" ("), style: (fg: "#af87d7")),
-                    (kind: Property(Status(QueueTimeTotal(separator: "/"))), style: (fg: "#af87d7")),
-                    (kind: Text("<"), style: (fg: "#af87d7")),
-                    (kind: Property(Status(QueueLength(thousands_separator: ","))), style: (fg: "#af87d7")),
-                    (kind: Text(">"), style: (fg: "#af87d7")),
-                    (kind: Text(")"), style: (fg: "#af87d7")),
+                    (kind: Group([
+                        (kind: Text("[ "), style: (fg: "#FABD2F", modifiers: "Bold")),
+                        // (kind: Property(Status(State)), style: (fg: "#FABD2F", modifiers: "Bold")),
+                        (kind: Property(Status(StateV2(
+                            playing_label: " Playing", playing_style: (fg: "#FABD2F"),
+                            paused_label: " Paused", paused_style: (fg: "#FABD2F"),
+                            stopped_label: " Stopped", stopped_style: (fg: "#FABD2F"),
+                        )))),
+                        (kind: Text(" ]"), style: (fg: "#FABD2F", modifiers: "Bold")),
+                    ])),
+                    (kind: Group([
+                        (kind: Text(" ("), style: (fg: "#af87d7")),
+                        (kind: Property(Status(QueueTimeTotal(separator: "/"))), style: (fg: "#af87d7")),
+                        (kind: Text("<"), style: (fg: "#af87d7")),
+                        (kind: Property(Status(QueueLength(thousands_separator: ","))), style: (fg: "#af87d7")),
+                        (kind: Text(">"), style: (fg: "#af87d7")),
+                        (kind: Text(")"), style: (fg: "#af87d7")),
+                    ])),
                 ],
                 // Song Title
                 center: [
@@ -280,14 +288,18 @@
             (
                 // [ 0:38/3:09 ] (192 kbps)
                 left: [
-                    (kind: Text("[ "), style: (fg: "#FABD2F", modifiers: "Bold")),
-                    (kind: Property(Status(Elapsed)), style: (fg: "#FABD2F")),
-                    (kind: Text("/"),style: (fg: "#FABD2F")),
-                    (kind: Property(Status(Duration)),style: (fg: "#FABD2F")),
-                    (kind: Text(" ]"), style: (fg: "#FABD2F", modifiers: "Bold")),
-                    (kind: Text(" ("), style: (fg: "#af87d7")),
-                    (kind: Property(Status(Bitrate)), style: (fg: "#af87d7")),
-                    (kind: Text(" kbps)"), style: (fg: "#af87d7")),
+                    (kind: Group([
+                        (kind: Text("[ "), style: (fg: "#FABD2F", modifiers: "Bold")),
+                        (kind: Property(Status(Elapsed)), style: (fg: "#FABD2F")),
+                        (kind: Text("/"),style: (fg: "#FABD2F")),
+                        (kind: Property(Status(Duration)),style: (fg: "#FABD2F")),
+                        (kind: Text(" ]"), style: (fg: "#FABD2F", modifiers: "Bold")),
+                    ])),
+                    (kind: Group([
+                        (kind: Text(" ("), style: (fg: "#af87d7")),
+                        (kind: Property(Status(Bitrate)), style: (fg: "#af87d7")),
+                        (kind: Text(" kbps)"), style: (fg: "#af87d7")),
+                    ])),
                 ],
                 // Artist - Album
                 center: [
@@ -336,40 +348,48 @@
         ],
     ),
 
-    // https://mierak.github.io/rmpc/next/configuration/song-table/
+    /* Song Table Format */
+    /* See https://rmpc.mierak.dev/next/configuration/song-table/
+     *     https://rmpc.mierak.dev/next/configuration/stickers/ */
+    // ------------------------------------------------------------
     //          Title       Artist       Album       Duration
     // ------------------------------------------------------------
-    // https://rmpc.mierak.dev/next/configuration/stickers/
     show_song_table_header: true, // NOTE: enable it
     song_table_album_separator: None,
     song_table_format: [
         (
-            prop: (kind: Sticker("playCount"),  // NOTE: see `on_song_change` in config.ron and the bin/playcount script
+            prop: (
+                kind: Sticker("playCount"),  // NOTE: see `on_song_change` in config.ron and the bin/playcount script
                 default: (kind: Text("0")),
             ),
             width: "5%",
+            alignment: Right,
         ),
         (
-            prop: (kind: Property(Title), style: (fg: "#68727A"),
+            prop: (
+                kind: Property(Title), style: (fg: "#68727A"),
                 default: (kind: Text("Unknown"))
             ),
             width: "30%",
         ),
         (
-            prop: (kind: Property(Artist), style: (fg: "#e5c76b"),
+            prop: (
+                kind: Property(Artist), style: (fg: "#e5c76b"),
                 default: (kind: Text("Unknown"), style: (fg: "white"))
             ),
             width: "20%",
             alignment: Left,
         ),
         (
-            prop: (kind: Property(Album), style: (fg: "#6cbfbf"),
+            prop: (
+                kind: Property(Album), style: (fg: "#6cbfbf"),
                 default: (kind: Text("Unknown"), style: (fg: "white"))
             ),
             width: "30%",
         ),
         (
-            prop: (kind: Property(Duration), style: (fg: "white", modifiers: "Italic"),
+            prop: (
+                kind: Property(Duration), style: (fg: "white", modifiers: "Italic"),
                 default: (kind: Text("-"))
             ),
             width: "15%",
@@ -383,51 +403,50 @@
     browser_song_format: [
         (
             kind: Group([
-                (kind: Property(Track)),
-                (kind: Text(" ")),
-            ])
+               (kind: Property(Track)),
+               (kind: Text(" ")),
+            ]),
         ),
         (
             kind: Group([
-                (kind: Property(Artist)),
-                (kind: Text(" - ")),
-                (kind: Property(Title)),
+               (kind: Property(Artist)),
+               (kind: Text(" - ")),
+               (kind: Property(Title)),
             ]),
             default: (kind: Property(Filename))
         ),
     ],
 
-    // -> Pane(Cava)
-    // https://rmpc.mierak.dev/next/configuration/cava/#theming
+    /* -> Pane(Cava) */
+    /* See https://rmpc.mierak.dev/next/configuration/cava/#theming */
     cava: (
-        // symbols that will be used to draw the bar in the visualiser, in ascending order of
-        // fill fraction
+        /* symbols that will be used to draw the bar in the visualiser, in ascending order of
+         * fill fraction */
         bar_symbols: ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'],
-        // similar to bar_symbols but these are used for the top-down rendering, meaning for orientation
-        // "Horizontal" and "Top"
+        /* similar to bar_symbols but these are used for the top-down rendering, meaning for orientation
+         * Horizontal" and "Top". */
         inverted_bar_symbols: ['▔', '🮂', '🮃', '▀', '🮄', '🮅', '🮆', '█'],
 
         // bg_color: "black", // background color, defaults to rmpc's bg color if not provided
         bar_width: 1,   // width of a single bar in columns
         bar_spacing: 1, // free space between bars in columns
 
-        // Possible values are "Top", "Bottom" and "Horizontal". Top makes the bars go from top to
-        // bottom, "Bottom" is from bottom up, and "Horizontal" is split in the middle with bars going
-        // both down and up from there.
-        // Using non-default symbols with "Top" and "Horizontal" may produce undesired output.
+        /* Possible values are "Top", "Bottom" and "Horizontal". Top makes the bars go from top to
+         * bottom, "Bottom" is from bottom up, and "Horizontal" is split in the middle with bars going
+         * both down and up from there. */
+        /* Using non-default symbols with "Top" and "Horizontal" may produce undesired output. */
         orientation: Bottom,
-        // orientation: Horizontal,
 
-        // Colors can be configured in three different ways: a single color, different colors
-        // per row and a gradient. You can use the same colors as everywhere else. Only specify
-        // one of these:
+        /* Colors can be configured in three different ways: a single color, different colors
+         * per row and a gradient. You can use the same colors as everywhere else. Only specify
+         * one of these: */
 
-        // Every bar symbol will be red
+        /* Every bar symbol will be red. */
         // bar_color: Single("red"),
 
-        // The first two rows(two lowest amplitudes) will be red, after that two green rows
-        // and the rest will be blue. You can have as many as you want here. The last value
-        // will be used if the height exceeds the length of this array.
+        /* The first two rows(two lowest amplitudes) will be red, after that two green rows
+         * and the rest will be blue. You can have as many as you want here. The last value
+         * will be used if the height exceeds the length of this array. */
         // bar_color: Rows([
         //   "red",
         //   // "red",
@@ -436,13 +455,13 @@
         //   "blue",
         // ])
 
-        // A simple color gradient. This is a map where keys are percent values of the height
-        // where the color starts. After that it is linearly interpolated towards the next value.
-        // In this example, the color will start at green for the lowest amplitudes, go towards
-        // blue at half amplitudes and finishing as red for the highest values. Keys must be between
-        // 0 and 100 and if the first or last key are not 0 and 100 respectively, the lowest and highest
-        // value will be used as 0 and 100. Only hex and RGB colors are supported here and your terminal
-        // must support them as well!
+        /* A simple color gradient. This is a map where keys are percent values of the height
+         * where the color starts. After that it is linearly interpolated towards the next value.
+         * In this example, the color will start at green for the lowest amplitudes, go towards
+         * blue at half amplitudes and finishing as red for the highest values. Keys must be between
+         * 0 and 100 and if the first or last key are not 0 and 100 respectively, the lowest and highest
+         * value will be used as 0 and 100. Only hex and RGB colors are supported here and your terminal
+         * must support them as well! */
          bar_color: Gradient({
            // 0: "rgb(  0, 255,   0)",
            // 50: "rgb(  0,   0, 255)",

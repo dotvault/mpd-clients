@@ -1,61 +1,80 @@
-// https://rmpc.mierak.dev/next/configuration/
+/* General configuration : https://rmpc.mierak.dev/next/configuration/ */
 
 #![enable(implicit_some)]
 #![enable(unwrap_newtypes)]
 #![enable(unwrap_variant_newtypes)]
 (
-    // MPD 🤝 rmpc
-    // NOTE: Check your mpd.conf. Ensure the corresponding item's data matches.
-    //
+    /* MPD 🤝 rmpc */
+    /* NOTE: Check your mpd.conf. Ensure the corresponding item's data matches. */
+
     // address: "127.0.0.1:6600",     // IP:Port    , see `bind_to_address` in mpd.conf (Network)
     address: "/tmp/mpd_socket",       // Socket file, see `bind_to_address` in mpd.conf (Unix socket)
     password: None, // see `password` in mpd.conf
 
-    // Paths
+    /* Paths */
     cache_dir: None,                  // WARNING: Currently used only to store files downloaded from YouTube.
     lyrics_dir: Some("~/User/Music"), // WARNING: hardcode
 
-    // Theme
+    /* Theme */
     theme: Some("default"), // -> themes/xxx.ron
 
-    // Performance
+    /* Performance */
     max_fps: 60,
     status_update_interval_ms: 1000,
 
-    // Triggers
+    /* Triggers */
+    select_current_song_on_change: false,
+    keep_state_on_song_change: true,    // NextTrack/PreviousTrack
+    exec_on_song_change_at_start: false,
     on_song_change: ["~/.config/rmpc/bin/notify",
                      "~/.config/rmpc/bin/playcount"], // when the song changes
-    select_current_song_on_change: false,
-    keep_state_on_song_change: true,
 
     // TODO: Themes must be designed for different sizes.
     // See https://mierak.github.io/rmpc/next/guides/on_resize/
     //
     // on_resize: ["~/.config/rmpc/bin/onresize"], // auto change theme for different size.
 
-    // Sort
+    /* Sort */
+    // ignore_leading_the: false,
     // browser_song_sort: [Disc， Track， Artist， Title],
     // directories_sort: SortFormat(group_by_type: true, reverse: false),
 
-    // Misc
-    volume_step: 5,
-    scrolloff: 0,
-    wrap_navigation: false,
-    enable_mouse: true, // I perfer to use my keyboard.
+    /* Lyrics */
+    enable_lyrics_index: true,
+    enable_lyrics_hot_reload: true,
+
+    /* Timeout */
+    // mpd_read_timeout_ms: 10000,
+    // mpd_write_timeout_ms: 5000, // mpd socket
+    // mpd_idle_read_timeout_ms: None, // WARNING: Do not set this option.
+    // normal_timeout_ms: 1000,
+    // insert_timeout_ms: 1000,
+    // status_update_interval_ms: 1000,
+
+    /* Misc */
+    enable_mouse: true,             // I perfer to use my keyboard.
     enable_config_hot_reload: true, // default enabled
+    // volume_step: 5,
+    // scrolloff: 0,
+    // auto_open_downloads: true, // for ytdlp
+    // duration_format: "%m:%S",  // "5:43"
+    // wrap_navigation: false,
+    // scroll_amount: 1,
+    // show_playlists_in_browser: NonRoot
+    // reflect_changes_to_playlist: false // WARNING: mpd >= 0.24.0
 
     // ------------------------------------------------------------------------------------
 
-    // https://rmpc.mierak.dev/next/configuration/keybinds/
+    /* https://rmpc.mierak.dev/next/configuration/keybinds/ */
     keybinds: (
         global: {
-            // Show Infos
+            /* Show Infos */
             "~":       ShowHelp,
             "I":       ShowCurrentSongInfo,
             "O":       ShowOutputs,
             "P":       ShowDecoders,
 
-            // Base
+            /* Base */
             ":":       CommandMode,
             "s":       Stop,
             "q":       Quit,
@@ -67,7 +86,7 @@
             ">":       NextTrack,     // next song
             "<":       PreviousTrack, // previous song
 
-            // Switch Tabs
+            /* Switch Tabs */
             "1":       SwitchToTab("Main"),
             "2":       SwitchToTab("Queue"),
             "3":       SwitchToTab("Lyrics"),
@@ -81,11 +100,11 @@
             "<Tab>":   NextTab,
             "<S-Tab>": PreviousTab,
 
-            // Playback state
-            // NOTE: These options can be combined to produce different effects.
-            // See
-            // - https://github.com/mierak/rmpc/discussions/571
-            // - https://github.com/MusicPlayerDaemon/MPD/issues/539
+            /* Playback state */
+            /* NOTE: These options can be combined to produce different effects. */
+            /* See
+             * - https://github.com/mierak/rmpc/discussions/571
+             * - https://github.com/MusicPlayerDaemon/MPD/issues/539 */
             "z":       ToggleRepeat,  // 
             "x":       ToggleRandom,  // 
             "c":       ToggleConsume, // Remove played tracks
@@ -93,7 +112,7 @@
         },
 
         navigation: {
-            // Base
+            /* Base */
             "<Up>":      Up,
             "<Down>":    Down,
             "<Left>":    Left,
@@ -114,17 +133,17 @@
             "K":         MoveUp,   // move up a song in queue
             "J":         MoveDown, // move down a song in queue
 
-            // Common
+            /* Common */
             "/":         EnterSearch,
             "<Space>":   Select, // mark a `M`
 
-            // Playlist
+            /* Playlist */
             "a":         Add,    // add a song to the queue from a playlist
             "A":         AddAll, // add all songs to the queue from a playlist
             "D":         Delete, // delete a playlist
             "r":         Rename, // rename a playlist
 
-            // Popup menu
+            /* Popup menu */
             "<C-c>":     Close,
             "<Esc>":     Close,
             "<CR>":      Confirm,
@@ -145,7 +164,7 @@
         },
     ),
 
-    // https://mierak.github.io/rmpc/next/configuration/tabs/
+    /* https://mierak.github.io/rmpc/next/configuration/tabs/ */
     // ----------------------------------------------------------------------
     //          | Main | Queue | Directories | Playlists | Search |
     // -----------------------------------------------------------------------
@@ -198,12 +217,14 @@
         ),
     ],
 
-    // -> Pane(Search)
-    // https://rmpc.mierak.dev/next/configuration/search/
-    // see `browser_song_format` in themes/default.ron
+    /* -> Pane(Search) */
+    /* https://rmpc.mierak.dev/next/configuration/search/ */
+    /* see `browser_song_format` in themes/default.ron */
     search: (
-        case_sensitive: false,  // a/A
+        case_sensitive: false,    // a/A
+        // ignore_diacritics: false, // WARNING: Cannot be enabled at the same time as `case_sensitive`.
         // search_button: false,
+        // custom_query: false,      // WARNING: Do not set this option.
         mode: Contains, // filter mode
         tags: [
             (value: "any",         label: "Any Tag"),
@@ -216,17 +237,18 @@
         ],
     ),
 
-    // -> Pane(Artists)
+    /* -> Pane(Artists) */
     artists: (
         album_display_mode: SplitByDate,
         album_sort_by: Date,
+        album_date_tags: [Date],
     ),
 
-    // -> Pane(AlbumArt)
-    // https://rmpc.mierak.dev/next/configuration/album-art/
+    /* -> Pane(AlbumArt) */
+    /* https://rmpc.mierak.dev/next/configuration/album-art/ */
     album_art: (
-        // NOTE: You maybe need to install `kitty` or `ueberzugpp`  which supports display images
-        // in your terminal.
+        /* NOTE: You maybe need to install `kitty` or `ueberzugpp`, which supports display images
+         * in your terminal. */
         method: Auto, // kitty -> Ueberzug -> Block
         max_size_px: (width: 1200, height: 1200),
         // disabled_protocols: ["http://", "https://"],
@@ -234,9 +256,9 @@
         horizontal_align: Center,
     ),
 
-    // -> Pane(Cava)
-    // https://rmpc.mierak.dev/next/configuration/cava/#setup
-    // Theme part: see `cava` in themes/default.ron
+    /* -> Pane(Cava) */
+    /* https://rmpc.mierak.dev/next/configuration/cava/#setup */
+    /* Theme part: see `cava` in themes/default.ron */
     cava: (
         // framerate: 60,              // default 60
         // autosens: true,             // default true
@@ -257,8 +279,8 @@
             // monstercat: false,   // default false
             // waves: false,        // default false
         ),
-        // this is a list of floating point numbers thats directly passed to cava
-        // they are passed in order that they are defined
+        /* this is a list of floating point numbers thats directly passed to cava
+           they are passed in order that they are defined */
         eq: []
     ),
 )
