@@ -28,17 +28,7 @@ norm_nosym() {
 }
 
 is_diff_mtime() {
-    local src=$1
-    local tgt=$2
-    if [ ! -e "$src" ] || [ ! -e "$tgt" ]; then
-        return 2
-    fi
-
-    local t1=$(stat -c %Y "$src")
-    local t2=$(stat -c %Y "$tgt")
-    if [ "$t1" -ne "$t2" ]; then
-        return 0
-    else
-        return 1
-    fi
+    [[ ! -e $1 || ! -e $2 ]] && return 2
+    [[ $(stat -c %Y "$1") -ne $(stat -c %Y "$2") ]] && return 0
+    return 1
 }
