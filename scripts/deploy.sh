@@ -7,15 +7,15 @@
 set -e
 
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
-MANIFEST="${SCRIPT_DIR}/MANIFEST.linux"
+MANIFEST="MANIFEST.linux"
 
-SOURCE_ROOT="$SCRIPT_DIR"
+SOURCE_ROOT="$PWD"
 TARGET_ROOT="$HOME"
-HOME_BACKUP_DIR="${SCRIPT_DIR}/__backup__/home_backup/$(date +%y-%m-%d-%H%M%S)"
-REPO_BACKUP_DIR="${SCRIPT_DIR}/__backup__/repo_backup/$(date +%y-%m-%d-%H%M%S)"
+HOME_BACKUP_DIR="${PWD}/__backup__/home_backup/$(date +%y-%m-%d-%H%M%S)"
+REPO_BACKUP_DIR="${PWD}/__backup__/repo_backup/$(date +%y-%m-%d-%H%M%S)"
 OP=""
 
-if ! source "${SCRIPT_DIR}/scripts/global_fn.sh"; then
+if ! source "${SCRIPT_DIR}/global_fn.sh"; then
     echo "Error: unable to source scripts/global_fn.sh..."
     exit 1
 fi

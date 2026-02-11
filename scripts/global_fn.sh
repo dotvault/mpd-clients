@@ -19,7 +19,9 @@ INFO="$(tput setaf 4)[INFO]$(tput sgr0)"
 WARN="$(tput setaf 214)[WARN]$(tput sgr0)"
 ACTION="$(tput setaf 6)[ACTION]$(tput sgr0)"
 
-norm() { realpath -m "$1"; }
+norm() {
+    realpath -m "$1"
+}
 
 norm_nosym() {
     realpath -m --no-symlinks "$1"
