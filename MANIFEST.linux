@@ -1,3 +1,14 @@
+# Syntax: <appname>|[source_suffix]|<file_or_dir>|<operation>|[target_suffix]
+#
+# NOTE: Use '|' as the delimiter.
+#
+# - appname         : required, the name of application.
+# - source_suffix   : optional, relative path, relative to the repository root ($SCRIPT_DIR)
+# - file/directory  : required, objects to operate on, a file or directory or relative path
+# - operation       : required, copy/symlink/exclude
+# - target_suffix   : optional, relative path, relative to your $HOME directory
+
+
 ## Music Player
 
 ## Requirements:
