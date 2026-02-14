@@ -1,2 +1,5 @@
 __backup__
 .markdownlint.yaml
+
+sync_copy.sh
+deploy.sh
