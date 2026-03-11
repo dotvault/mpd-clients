@@ -13,7 +13,7 @@
 
     /* Paths */
     cache_dir: None,                  // WARNING: Currently used only to store files downloaded from YouTube.
-    lyrics_dir: Some("~/User/Music"), // WARNING: hardcode
+    lyrics_dir: Some("~/xdg-user-dirs/Music"), // WARNING: hardcode
 
     /* Theme */
     theme: Some("default"), // -> themes/xxx.ron

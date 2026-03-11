@@ -25,7 +25,7 @@ ncmpcpp_directory = ~/.config/ncmpcpp
 ## MPD clients (eg. ncmpc) also use that location.
 # NOTE: This directory may be created automatically.
 # WARNING: harcode
-lyrics_directory = ~/User/Music/ncmpcpp
+lyrics_directory = ~/xdg-user-dirs/Music/ncmpcpp
 
 ##### connection settings #####
 ##
