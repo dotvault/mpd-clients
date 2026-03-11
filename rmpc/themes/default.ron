@@ -229,7 +229,7 @@
                 ),
             ),
             (
-                size: "5%",
+                size: "4%",
                 pane: Pane(Tabs),
                 borders: "TOP",
             ),

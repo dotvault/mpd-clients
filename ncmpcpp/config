@@ -3,6 +3,7 @@
 # Refs
 # - Enabling visualization: https://wiki.archlinux.org/title/Ncmpcpp#Enabling_visualization
 # - Notification on song change: https://wiki.archlinux.org/title/Ncmpcpp#Notification_on_song_change
+# - https://github.com/ncmpcpp/ncmpcpp/blob/master/doc/config
 
 # Cheat sheet
 # - https://hexmos.com/freedevtools/c/cmd/ncmpcpp/
@@ -71,13 +72,14 @@ mpd_connection_timeout = 5
 ##
 ## will make localhost:5555 available as a source of data for the stereo
 ## visualizer.
-visualizer_data_source = "/tmp/mpd.fifo" # -> mpd's FIFO audio_output.path
+## -> mpd's FIFO audio_output.path
+visualizer_data_source = "/tmp/mpd.fifo"
 
 ## NOTE: Below parameter is needed for ncmpcpp to determine which output
 ## provides data for visualizer and reset it at the beginning of visualization
 ## to synchronize with audio.
-##
-visualizer_output_name = "FIFO visualizer" # -> mpd's FIFO audio_output.name
+## -> mpd's FIFO audio_output.name
+visualizer_output_name = "FIFO visualizer"
 
 ## If you set format to 44100:16:2, make it 'yes'.
 visualizer_in_stereo = yes
@@ -90,10 +92,10 @@ visualizer_in_stereo = yes
 ## with fftw3 support.
 ##
 ## Available values: spectrum, wave, wave_filled, ellipse.
-visualizer_type = "spectrum" # spectrum/ellipse/wave_filled/wave
+visualizer_type = "spectrum"
 visualizer_fps = 120
 #visualizer_autoscale = no
-visualizer_look = "+|" # ●▮
+visualizer_look = "+|"
 visualizer_color = blue, cyan, green, yellow, magenta, red
 
 ## Alternative subset of 256 colors for terminals that support it.
